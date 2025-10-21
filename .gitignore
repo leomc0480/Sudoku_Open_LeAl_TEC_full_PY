@@ -1,0 +1,7 @@
+# Ignorar la carpeta de cache de Python
+__pycache__/
+
+# Ignorar los archivos específicos
+GUION_VIDEO
+estadisticas_sudoku
+*.txt

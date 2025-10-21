@@ -11,7 +11,18 @@ import tkinter as tk
 
 
 def main():
-    """Inicializa y ejecuta la aplicación de Sudoku"""
+    """
+    Inicializa y ejecuta la aplicación de Sudoku
+
+    Crea la ventana principal de Tkinter, instancia la interfaz gráfica
+    y ejecuta el bucle principal de eventos de la aplicación.
+
+    Args:
+        Ninguno
+
+    Returns:
+        None
+    """
     root = tk.Tk()
     app = SudokuGUI(root)
     root.mainloop()

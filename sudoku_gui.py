@@ -11,9 +11,33 @@ import time
 
 
 class SudokuGUI:
-    """Interfaz gráfica principal del juego Sudoku"""
+    """
+    Interfaz gráfica principal del juego Sudoku
+
+    Maneja toda la presentación visual del juego usando Tkinter,
+    incluyendo el tablero, controles, temporizador y retroalimentación.
+
+    Atributos:
+        master (tk.Tk): Ventana principal de Tkinter
+        colors (dict): Paleta de colores para la interfaz
+        generator (SudokuGenerator): Generador de tableros
+        game (Optional[SudokuGame]): Instancia del juego actual
+        cells (List[List[tk.Entry]]): Matriz de widgets de celdas
+        selected_cell (Optional[tuple]): Celda actualmente seleccionada
+        help_mode (bool): Indica si el modo ayuda está activo
+        timer_running (bool): Indica si el temporizador está corriendo
+    """
 
     def __init__(self, master):
+        """
+        Inicializa la interfaz gráfica del juego Sudoku
+
+        Args:
+            master (tk.Tk): Ventana principal de Tkinter
+
+        Returns:
+            None
+        """
         self.master = master
         self.master.title("🎮 Sudoku - Juego Cognitivo")
         self.master.resizable(False, False)
@@ -49,7 +73,17 @@ class SudokuGUI:
         self._show_start_screen()
 
     def _configure_styles(self):
-        """Configura los estilos de la aplicación"""
+        """
+        Configura los estilos de la aplicación
+
+        Establece el tema y estilos de widgets para toda la interfaz.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         self.master.configure(bg=self.colors['bg'])
 
         style = ttk.Style()
@@ -68,7 +102,18 @@ class SudokuGUI:
                   background=[('active', self.colors['button_hover'])])
 
     def _show_start_screen(self):
-        """Muestra la pantalla de inicio con selección de dificultad"""
+        """
+        Muestra la pantalla de inicio con selección de dificultad
+
+        Crea la pantalla inicial con el título, autores y botones
+        para seleccionar el nivel de dificultad del juego.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         self.start_frame = tk.Frame(self.master, bg=self.colors['bg'])
         self.start_frame.pack(padx=40, pady=40)
 
@@ -127,7 +172,18 @@ class SudokuGUI:
             btn.pack(pady=8, fill='x')
 
     def _start_game(self, difficulty: str):
-        """Inicia un nuevo juego con la dificultad seleccionada"""
+        """
+        Inicia un nuevo juego con la dificultad seleccionada
+
+        Destruye la pantalla de inicio, genera un nuevo tablero y
+        crea la interfaz de juego con todos sus componentes.
+
+        Args:
+            difficulty (str): Nivel de dificultad ('Fácil', 'Medio', 'Difícil')
+
+        Returns:
+            None
+        """
         # Destruir pantalla de inicio
         self.start_frame.destroy()
 
@@ -142,7 +198,18 @@ class SudokuGUI:
         self._start_timer()
 
     def _create_game_interface(self):
-        """Crea la interfaz principal del juego"""
+        """
+        Crea la interfaz principal del juego
+
+        Construye todos los componentes de la interfaz: panel superior,
+        tablero de Sudoku, teclado numérico y panel de control.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         # Frame principal
         main_frame = tk.Frame(self.master, bg=self.colors['bg'])
         main_frame.pack(padx=20, pady=20)
@@ -160,7 +227,17 @@ class SudokuGUI:
         self._create_control_panel(main_frame)
 
     def _create_top_panel(self, parent):
-        """Crea el panel superior con información del juego"""
+        """
+        Crea el panel superior con información del juego
+
+        Muestra el temporizador, nivel de dificultad y contador de ayudas.
+
+        Args:
+            parent (tk.Frame): Frame contenedor donde se creará el panel
+
+        Returns:
+            None
+        """
         top_panel = tk.Frame(parent, bg=self.colors['panel'], bd=2, relief='flat')
         top_panel.pack(fill='x', pady=(0, 15))
 
@@ -216,7 +293,18 @@ class SudokuGUI:
         self.help_label.pack(side='left', padx=5)
 
     def _create_board(self, parent):
-        """Crea el tablero de Sudoku 9x9"""
+        """
+        Crea el tablero de Sudoku 9x9
+
+        Genera una matriz de 9x9 widgets Entry para el tablero,
+        con bordes más gruesos cada 3 celdas para marcar los subcuadros.
+
+        Args:
+            parent (tk.Frame): Frame contenedor donde se creará el tablero
+
+        Returns:
+            None
+        """
         board_frame = tk.Frame(parent, bg=self.colors['grid_line'], bd=3)
         board_frame.pack(pady=10)
 
@@ -269,7 +357,18 @@ class SudokuGUI:
             self.cells.append(row_cells)
 
     def _create_number_pad(self, parent):
-        """Crea el teclado numérico"""
+        """
+        Crea el teclado numérico
+
+        Genera botones del 1 al 9 y un botón para borrar,
+        permitiendo ingresar números mediante clicks.
+
+        Args:
+            parent (tk.Frame): Frame contenedor donde se creará el teclado
+
+        Returns:
+            None
+        """
         pad_frame = tk.Frame(parent, bg=self.colors['bg'])
         pad_frame.pack(pady=15)
 
@@ -312,7 +411,17 @@ class SudokuGUI:
         clear_btn.grid(row=3, column=0, columnspan=3, padx=3, pady=3, sticky='ew')
 
     def _create_control_panel(self, parent):
-        """Crea el panel de control con botones de acción"""
+        """
+        Crea el panel de control con botones de acción
+
+        Genera los botones principales: Ayuda, Verificar, Finalizar y Nuevo Juego.
+
+        Args:
+            parent (tk.Frame): Frame contenedor donde se creará el panel
+
+        Returns:
+            None
+        """
         control_frame = tk.Frame(parent, bg=self.colors['bg'])
         control_frame.pack(pady=15, fill='x')
 
@@ -365,7 +474,18 @@ class SudokuGUI:
         new_btn.pack(side='left', padx=5, fill='x', expand=True)
 
     def _on_cell_select(self, row: int, col: int):
-        """Maneja la selección de una celda"""
+        """
+        Maneja la selección de una celda
+
+        Registra la celda seleccionada y aplica ayuda si el modo ayuda está activo.
+
+        Args:
+            row (int): Fila de la celda seleccionada (0-8)
+            col (int): Columna de la celda seleccionada (0-8)
+
+        Returns:
+            None
+        """
         if self.game.is_cell_fixed(row, col):
             return
 
@@ -378,7 +498,20 @@ class SudokuGUI:
             self.help_btn.config(text="💡 Activar Ayuda", bg='#f9e2af')
 
     def _on_key_press(self, event, row: int, col: int):
-        """Maneja las pulsaciones de teclas en las celdas"""
+        """
+        Maneja las pulsaciones de teclas en las celdas
+
+        Procesa entrada del teclado, permitiendo solo dígitos 1-9 y
+        teclas de borrado (BackSpace, Delete).
+
+        Args:
+            event (tk.Event): Evento de pulsación de tecla
+            row (int): Fila de la celda (0-8)
+            col (int): Columna de la celda (0-8)
+
+        Returns:
+            str: 'break' para prevenir el comportamiento por defecto
+        """
         if self.game.is_cell_fixed(row, col):
             return 'break'
 
@@ -399,7 +532,18 @@ class SudokuGUI:
             return 'break'
 
     def _insert_number(self, number: int):
-        """Inserta un número en la celda seleccionada"""
+        """
+        Inserta un número en la celda seleccionada
+
+        Coloca el número especificado en la celda actualmente seleccionada
+        usando el teclado numérico visual.
+
+        Args:
+            number (int): Número a insertar (1-9)
+
+        Returns:
+            None
+        """
         if self.selected_cell is None:
             messagebox.showwarning("⚠️ Advertencia", "Selecciona una celda primero")
             return
@@ -416,7 +560,17 @@ class SudokuGUI:
         self._update_cell_color(row, col)
 
     def _clear_cell(self):
-        """Borra el contenido de la celda seleccionada"""
+        """
+        Borra el contenido de la celda seleccionada
+
+        Vacía la celda actualmente seleccionada (establece valor a 0).
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         if self.selected_cell is None:
             messagebox.showwarning("⚠️ Advertencia", "Selecciona una celda primero")
             return
@@ -432,7 +586,19 @@ class SudokuGUI:
         self._update_cell_color(row, col)
 
     def _update_cell_color(self, row: int, col: int):
-        """Actualiza el color de una celda según su estado"""
+        """
+        Actualiza el color de una celda según su estado
+
+        Cambia el color de fondo de la celda basándose en si está
+        vacía o tiene un valor.
+
+        Args:
+            row (int): Fila de la celda (0-8)
+            col (int): Columna de la celda (0-8)
+
+        Returns:
+            None
+        """
         if self.game.is_cell_fixed(row, col):
             return
 
@@ -445,7 +611,18 @@ class SudokuGUI:
             self.cells[row][col].config(bg=self.colors['editable'])
 
     def _toggle_help_mode(self):
-        """Activa/desactiva el modo ayuda"""
+        """
+        Activa/desactiva el modo ayuda
+
+        Cambia el estado del modo ayuda y actualiza el botón correspondiente.
+        Cuando está activo, el siguiente click en una celda revelará su valor correcto.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         self.help_mode = not self.help_mode
 
         if self.help_mode:
@@ -457,7 +634,19 @@ class SudokuGUI:
             self.help_btn.config(text="💡 Activar Ayuda", bg='#f9e2af')
 
     def _apply_help(self, row: int, col: int):
-        """Aplica ayuda a una celda específica"""
+        """
+        Aplica ayuda a una celda específica
+
+        Revela el valor correcto de la celda y lo muestra en color verde.
+        Incrementa el contador de ayudas usadas.
+
+        Args:
+            row (int): Fila de la celda (0-8)
+            col (int): Columna de la celda (0-8)
+
+        Returns:
+            None
+        """
         if self.game.is_cell_fixed(row, col):
             messagebox.showwarning("⚠️ Advertencia", "Esta celda ya tiene un valor fijo")
             return
@@ -471,7 +660,19 @@ class SudokuGUI:
             self.help_label.config(text=str(self.game.helps_used))
 
     def _verify_board(self):
-        """Verifica el estado actual del tablero"""
+        """
+        Verifica el estado actual del tablero
+
+        Comprueba todas las celdas y las colorea según su estado:
+        verde (correctas), rojo (incorrectas), gris (vacías).
+        Muestra un resumen con las estadísticas.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         cell_status = self.game.check_all_cells()
 
         # Colorear celdas según su estado
@@ -497,9 +698,24 @@ class SudokuGUI:
         messagebox.showinfo("🔍 Verificación del Tablero", message)
 
     def _finish_game(self):
-        """Finaliza el juego y muestra resultados"""
+        """
+        Finaliza el juego y muestra resultados
+
+        Detiene el temporizador, calcula la puntuación final, guarda
+        las estadísticas en un archivo txt y muestra un mensaje detallado
+        con estadísticas del juego.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         self.timer_running = False
         result = self.game.finish_game()
+
+        # Guardar estadísticas en archivo txt
+        filepath = self.game.save_statistics_to_file(result)
 
         # Colorear todas las celdas
         for row, col in result['cell_status']['correct']:
@@ -530,12 +746,29 @@ class SudokuGUI:
         message += f"  • Celdas correctas: {len(result['cell_status']['correct'])}\n"
         message += f"  • Celdas incorrectas: {result['errors']}\n"
         message += f"  • Celdas vacías: {result['empty']}\n"
-        message += f"  • Ayudas usadas: {result['helps']}"
+        message += f"  • Ayudas usadas: {result['helps']}\n\n"
+
+        # Agregar información sobre guardado de estadísticas
+        if filepath:
+            message += f"💾 Estadísticas guardadas en:\n{filepath}"
+        else:
+            message += "⚠️ No se pudieron guardar las estadísticas"
 
         messagebox.showinfo(title, message)
 
     def _new_game(self):
-        """Inicia un nuevo juego"""
+        """
+        Inicia un nuevo juego
+
+        Pregunta al usuario si desea reiniciar, destruye la interfaz actual
+        y vuelve a la pantalla de selección de dificultad.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         if messagebox.askyesno("🔄 Nuevo Juego",
                                "¿Estás seguro de que quieres iniciar un nuevo juego?\n"
                                "Se perderá el progreso actual."):
@@ -554,12 +787,34 @@ class SudokuGUI:
             self._show_start_screen()
 
     def _start_timer(self):
-        """Inicia el temporizador"""
+        """
+        Inicia el temporizador
+
+        Activa la bandera del temporizador y comienza la actualización
+        automática cada segundo.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         self.timer_running = True
         self._update_timer()
 
     def _update_timer(self):
-        """Actualiza el temporizador cada segundo"""
+        """
+        Actualiza el temporizador cada segundo
+
+        Método recursivo que se llama a sí mismo cada 1000ms para
+        actualizar el tiempo transcurrido en formato MM:SS.
+
+        Args:
+            Ninguno
+
+        Returns:
+            None
+        """
         if self.timer_running and self.game:
             elapsed = self.game.get_elapsed_time()
             minutes = int(elapsed // 60)
